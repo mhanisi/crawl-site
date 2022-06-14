@@ -21,27 +21,27 @@ def crawl ():
 
         if done: break
 
-        for index, list in enumerate(lists):
+        for index, list in enumerate(tqdm(lists)):
             if index >= page_links_count: break;
-            links = list.find_all("h2")
-            print(links)
-            for link in tqdm(links):
-                path = link.find('a')['href']
-                url = "https://khabarfarsi.com" + path
+            link = list.find_all("h2")[0]
+            
+            path = link.find('a')['href']
+            url = "https://khabarfarsi.com" + path
+            
+            if index == 0:
+                if (last_url == url):
+                    done = True
+                    break;
+                last_url = url
 
-                if index == 0:
-                    if (last_url == url):
-                        done = True
-                        break;
-                    last_url = url
-
-                try:
-                    article = Article(url)
-                    article.download()
-                    article.parse()
-                    data.append({"url": url, "text": article.text, "title": article.title})
-                except:
-                    print(f"Failed to load {url}")
+            try:
+                article = Article(url)
+                article.download()
+                article.parse()
+                print(article)
+                data.append({"url": url, "text": article.text, "title": article.title})
+            except:
+                print(f"Failed to load {url}")
     
     df = pandas.DataFrame(data)
     df.to_csv(f"kabar_farsi.csv")
