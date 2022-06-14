@@ -9,7 +9,7 @@ page_links_count = 2
 def crawl ():
     done = False
     data = []
-    page = 0
+    page = 9
 
     last_url = ''
     while True:
@@ -24,7 +24,7 @@ def crawl ():
         for index, list in enumerate(lists):
             if index >= page_links_count: break;
             links = list.find_all("h2")
-
+            print(links)
             for link in tqdm(links):
                 path = link.find('a')['href']
                 url = "https://khabarfarsi.com" + path
