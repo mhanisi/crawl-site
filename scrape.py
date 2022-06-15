@@ -9,7 +9,7 @@ page_links_count = 2
 def crawl ():
     done = False
     data = []
-    page = 9
+    page = 0
 
     last_url = ''
     while True:
@@ -38,7 +38,7 @@ def crawl ():
                 article = Article(url)
                 article.download()
                 article.parse()
-                print(article)
+            
                 data.append({"url": url, "text": article.text, "title": article.title})
             except:
                 print(f"Failed to load {url}")
